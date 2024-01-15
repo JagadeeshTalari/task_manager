@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 
 const connectDB = require("./db/connect.db");
+require("dotenv").config()
 
 const tasks = require("./routes/tasks.routes");
 
@@ -22,7 +23,7 @@ app.use("/api/v1/tasks", tasks);
 
 const start = async () => {
   try {
-    await connectDB();
+    await connectDB(process.env.MONGO_URI);
     console.log(`connected to the DB...`);
     app.listen(port, (req, res) => {
       console.log(`Server is listening on port ${port}`);
