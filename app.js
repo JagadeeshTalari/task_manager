@@ -1,6 +1,7 @@
-require("./db/connect.db");
 const express = require("express");
 const app = express();
+
+const connectDB = require("./db/connect.db");
 
 const tasks = require("./routes/tasks.routes");
 
@@ -19,6 +20,16 @@ app.use("/api/v1/tasks", tasks);
 // app.patch('/api/v1/tasks/:id')    -   update task
 // app.delete('/api/v1/tasks/:id')   -   delete task
 
-app.listen(port, (req, res) => {
-  console.log(`Server is listening on port ${port}`);
-});
+const start = async () => {
+  try {
+    await connectDB();
+    console.log(`connected to the DB...`);
+    app.listen(port, (req, res) => {
+      console.log(`Server is listening on port ${port}`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+start();
